@@ -1,0 +1,139 @@
+1.Main函数
+main:
+
+2.常量定义
+四元式const , int , a , 0  (内存位置为0)
+	  const , int , b , 1  (内存位置为4)
+	  const , char, c , x  (内存位置为8)
+Mips:
+li $t0 ,0
+sw $t0,($fp)
+add $fp,$fp,4
+li $t0 ,1
+sw $t0,($fp)
+add $fp,$fp,4
+li $t0 ,x
+sw $t0,($fp)
+add $fp,$fp,4  
+	
+3.变量定义
+四元式var ,char ,a ,NULL    (内存位置为0)
+	  var ,int  ,b ,NULL    (内存位置为4)
+	  var ,int  ,c ,10      (内存位置为8至48)
+Mips:
+add $fp $fp 4 ($fp+4 内存位置后移一位) $fp=4
+add $fp $fp 4 ($fp+4 内存位置后移一位) $fp=8
+li $t0 10
+mul $t0,$t0,4
+add $fp $fp $t0 ($fp+4 内存位置后移十位) $fp=48
+
+4.赋值语句
+四元式 = , 1 , NULL , a  (a的内存位置为0)
+	   = , temp4,NULL,b  (b的内存位置为4)
+	   =, c@const ,NULL ,a(a的内存位置为0))
+	   []= , 1 , 1 , c  (c的首地址为8)
+	   []= , temp2 , temp0 , b(b的首地址为40)
+	   []= , 
+li $t0,1  //赋的值
+li $t1,0  //a的位置
+sw $t0,($t1)  //存值
+
+li $t0,4  //b的位置
+sw $t4,($t0)  //存值
+
+li $t0,0
+li $t8,'c'
+sw $t8,($t0)
+
+li $t0,1  //赋的值
+li $t1,1  //数组偏移
+li $t2,8  //数组首地址
+mul $t1,$t1,4  //偏移*4
+add $t2,$t2,$t1  //首地址+偏移*4
+sw $t0,($t2)  //存值
+
+li $t1,40  //数组首地址
+mul $t0,$t0,4  //偏移*4
+add $t1,$t1,$t0  //首地址+偏移*4
+sw $t2,($t1)
+
+5.四则运算
+四元式 + , a ,c ,temp0
+	   * , 1 , a , temp1
+	   - , 1, 2 ,temp2
+	   / , temp2,temp3,temp4
+	   - , a,NULL,temp5
+	   +,  a@const,1,temp6
+Mips:
+lw $t8,(a的位置)
+li $t9,(c的位置)
+add $t0,$t8,$t9
+
+li $t8,1
+lw $t9,(a的位置)
+mul $t1,$t8,$t9
+
+li $t8,1
+li $t8,0
+sub $t2,$t8,$t9
+
+div $t4,$t2,$t3
+
+sub $t5,$0,a
+
+li $t8,'a'
+li $t9,1
+add $t6,$t8,$t9
+
+6.数组取值
+四元式geta temp2 b temp1  (temp2=b[temp1])
+	  geta temp3 b 2      (temp3=b[2])
+	  geta temp1 b a      (temp1=b[a])
+li $t8,(b的首地址)
+mul $t1,$t1,4
+add $t8,$t8,$t1 (t8为b[temp1]地址)
+lw $t2,($t8)
+
+li $t8,(b的首地址)
+li $t9,2
+mul $t9,$t9,4
+add $t8,$t8,$t9
+lw $t3,($t8)
+
+li $t8,(b的首地址)
+lw $t9,(a的地址)
+mul $t9,$t9,4
+add $t8,$t8,$t9
+lw $t3,($t8)
+
+7.scanf语句
+四元式scanf ,a ,NULL, NULL
+li $v0,5  (a为int)  li $v0 , 12(a为char)
+syscall
+sw $v0,(a的位置)
+
+8.printf语句
+四元式printf str hello NULL	   (首先在.data声明str1:.asciiz "hello")
+      printf exp int    temp0
+	  printf exp char  a
+	  printf nextline NULL NULL  (首先在.data声明nextline:.asciiz "\n")
+	  printf exp char a@const
+Mips:
+li $v0,4
+la $a0,str1
+syscall
+
+li $v0,1
+move $a0,$t0
+syscall
+
+li $v0,11
+lw $a0,(a的位置)
+syscall
+
+li $v0,4
+la $a0,nextline
+syscall
+
+
+

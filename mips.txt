@@ -1,0 +1,94 @@
+.data
+temp_space:.space 6500
+nextline:.asciiz "\n"
+str1:.asciiz "sesasdasd"
+str2:.asciiz "testnum[2] = "
+.text
+add $fp,$sp,4
+j main
+fun1:
+sw $ra,-12($sp)
+li $v0,4
+la $a0,str1
+syscall
+li $v0,4
+la $a0,nextline
+syscall
+li $s7,1
+sw $s7,-8($sp)
+lw $ra,-12($sp)
+jr $ra
+lw $ra,-12($sp)
+jr $ra
+main:
+li $t0,12
+la $t1,temp_space
+sw $t0,0($t1)
+li $t8,0
+la $t9,temp_space
+sw $t8,4($t9)
+li $t8,'0'
+la $t9,temp_space
+sw $t8,8($t9)
+add $sp,$sp,-8
+add $sp,$sp,8
+add $sp,$sp,-0
+la $s6,temp_space
+lw $s7,4($s6)
+add $sp,$sp,-20
+sw $s7,0($sp)
+add $sp,$sp,20
+la $s6,temp_space
+lw $s7,8($s6)
+add $sp,$sp,-20
+sw $s7,-4($sp)
+add $sp,$sp,20
+add $sp,$sp,-20
+sw $t0,temp_space($fp)
+add $fp,$fp,4
+sw $t1,temp_space($fp)
+add $fp,$fp,4
+sw $t2,temp_space($fp)
+add $fp,$fp,4
+sw $t3,temp_space($fp)
+add $fp,$fp,4
+sw $t4,temp_space($fp)
+add $fp,$fp,4
+sw $t5,temp_space($fp)
+add $fp,$fp,4
+sw $t6,temp_space($fp)
+add $fp,$fp,4
+sw $t7,temp_space($fp)
+add $fp,$fp,4
+jal fun1
+add $fp,$fp,-4
+lw $t7,temp_space($fp)
+add $fp,$fp,-4
+lw $t6,temp_space($fp)
+add $fp,$fp,-4
+lw $t5,temp_space($fp)
+add $fp,$fp,-4
+lw $t4,temp_space($fp)
+add $fp,$fp,-4
+lw $t3,temp_space($fp)
+add $fp,$fp,-4
+lw $t2,temp_space($fp)
+add $fp,$fp,-4
+lw $t1,temp_space($fp)
+add $fp,$fp,-4
+lw $t0,temp_space($fp)
+lw $s0,-8($sp)
+add $sp,$sp,20
+add $sp,$sp,0
+move $t0,$s0
+li $v0,4
+la $a0,str2
+syscall
+li $v0,1
+move $a0,$t0
+syscall
+li $v0,4
+la $a0,nextline
+syscall
+li $v0,10
+syscall

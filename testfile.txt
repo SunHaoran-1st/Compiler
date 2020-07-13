@@ -1,0 +1,13 @@
+int fun1(int a,char b){
+	printf("sesasdasd");
+	return (1);
+}
+void main()
+{
+	const int p = 12;
+	int a;
+	char b;
+	a=0;
+	b='0';
+    printf("testnum[2] = ",fun1(a,b));
+}
